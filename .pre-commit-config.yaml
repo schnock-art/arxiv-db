@@ -1,0 +1,45 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort (python)
+#-   repo: https://github.com/hhatto/autopep8
+#    rev: v2.0.4
+#    hooks:
+#    -   id: autopep8
+-   repo: local
+    hooks:
+#    -   id: export-conda-requirements
+#        name: export-conda-environment
+#        language: system
+#        types: [python]
+#        entry: make export-conda-env
+#    -   id: git-add
+#        name: git-add
+#        language: system
+#        entry: git add *
+    -   id: black
+        name: black
+        entry: black .
+        language: system
+        types: [python]
+        require_serial: true
+    -   id: flake8
+        name: flake8
+        entry: flake8 .
+        language: system
+        types: [python]
+        require_serial: true
+    -   id: pylint
+        name: pylint
+        entry: pylint --errors-only
+        language: system
+        types: [python]
+        require_serial: true

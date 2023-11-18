@@ -1,0 +1,37 @@
+[tool.isort]
+line_length = 100
+indent = '    '
+multi_line_output = 3
+import_heading_future = "Futures"
+import_heading_stdlib = "Standard Library"
+import_heading_thirdparty = "Third Party"
+import_heading_firstparty = "Library"
+import_heading_local = "Local"
+include_trailing_comma = true
+use_parentheses = true
+force_grid_wrap = 0
+
+[tool.flake8]
+max-line-length = 79
+max-complexity = 18
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 120
+disable = "too-many-arguments,not-callable,logging-fstring-interpolation,E1101,R0903"
