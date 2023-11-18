@@ -34,4 +34,4 @@ exclude = '''
 
 [tool.pylint.'MESSAGES CONTROL']
 max-line-length = 120
-disable = "too-many-arguments,not-callable,logging-fstring-interpolation,E1101,R0903"
+disable = "too-many-arguments,not-callable,logging-fstring-interpolation,E1101,R0903,C0103"

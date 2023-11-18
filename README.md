@@ -1,8 +1,6 @@
 # arxiv-db
 Repository for Arxiv papers DB
 
-
-
 ## How to use
 ### Start the API
 ```
