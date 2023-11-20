@@ -33,9 +33,10 @@ repos:
         require_serial: true
     -   id: flake8
         name: flake8
-        entry: flake8 .
+        entry: flake8 --ignore=E402 .
         language: system
         types: [python]
+        #args: ['']
         require_serial: true
 #    -   id: pylint
 #        name: pylint

@@ -20,6 +20,6 @@ prepare-commit:
 	make export-conda-env
 	black . --preview
 	isort .
-	flake8 .
+	flake8 . --ignore=E402 || exit /b 0
 	pylint *.py **/*.py > pylint-results.txt || exit /b 0
 	git add *

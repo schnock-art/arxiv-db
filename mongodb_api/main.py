@@ -8,6 +8,7 @@ It includes configuration for logging, database connections, and API routes.
 
 # Standard Library
 import logging
+import logging.config
 import os
 from contextlib import asynccontextmanager
 from os.path import expanduser
