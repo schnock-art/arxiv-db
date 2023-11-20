@@ -21,4 +21,5 @@ prepare-commit:
 	black . --preview
 	isort .
 	flake8 .
+	pylint *.py **/*.py > pylint-results.txt || exit /b 0
 	git add *

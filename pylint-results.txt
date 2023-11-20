@@ -1,0 +1,12 @@
+************* Module arxiv-db.mongodb_api.routes
+mongodb_api\routes.py:50:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:75:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:88:15: W0622: Redefining built-in 'id' (redefined-builtin)
+mongodb_api\routes.py:104:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:122:17: W0622: Redefining built-in 'id' (redefined-builtin)
+mongodb_api\routes.py:153:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:162:17: W0622: Redefining built-in 'id' (redefined-builtin)
+mongodb_api\routes.py:184:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+
+------------------------------------------------------------------
+Your code has been rated at 9.33/10 (previous run: 9.33/10, +0.00)
