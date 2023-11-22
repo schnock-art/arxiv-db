@@ -1,7 +1,8 @@
 
 # Exports environment to requirements.txt
 export-conda-env:
-	conda env export --no-builds > environment.yml
+	conda env export --no-build	> environment.yml
+	filter_env.bat
 	pip freeze > requirements.txt
 
 # Installs requirements.txt

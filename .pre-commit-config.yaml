@@ -4,7 +4,7 @@ repos:
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
-        exclude: '^(Makefile|pylint-results\.txt)$'
+        exclude: '^(Makefile|pylint-results\.txt|excluded_libraries\.txt)$'
     -   id: trailing-whitespace
 -   repo: https://github.com/pycqa/isort
     rev: 5.12.0
