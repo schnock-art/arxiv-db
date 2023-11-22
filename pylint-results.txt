@@ -1,26 +1,39 @@
 ************* Module arxiv-db.utilites
 utilites.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+utilites.py:51:0: C0413: Import "import datetime" should be placed at the top of the module (wrong-import-position)
+************* Module arxiv-db.mongodb_api.models
+mongodb_api\models.py:26:0: C0413: Import "from .utils import load_paper_json" should be placed at the top of the module (wrong-import-position)
 ************* Module arxiv-db.mongodb_api.routes
 mongodb_api\routes.py:50:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
 mongodb_api\routes.py:75:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
 mongodb_api\routes.py:88:15: W0622: Redefining built-in 'id' (redefined-builtin)
 mongodb_api\routes.py:104:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
 mongodb_api\routes.py:122:17: W0622: Redefining built-in 'id' (redefined-builtin)
-mongodb_api\routes.py:153:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
-mongodb_api\routes.py:162:17: W0622: Redefining built-in 'id' (redefined-builtin)
-mongodb_api\routes.py:184:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:155:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+mongodb_api\routes.py:164:17: W0622: Redefining built-in 'id' (redefined-builtin)
+mongodb_api\routes.py:188:8: W0707: Consider explicitly re-raising using 'raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e' (raise-missing-from)
+************* Module arxiv-db.mongodb_api.utils
+mongodb_api\utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+mongodb_api\utils.py:11:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\utils.py:12:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+mongodb_api\utils.py:24:0: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module arxiv-db.mongodb_api.tests.test_routes
 mongodb_api\tests\test_routes.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-mongodb_api\tests\test_routes.py:11:0: C0413: Import "from unittest.mock import MagicMock" should be placed at the top of the module (wrong-import-position)
-mongodb_api\tests\test_routes.py:14:0: C0413: Import "from fastapi.testclient import TestClient" should be placed at the top of the module (wrong-import-position)
-mongodb_api\tests\test_routes.py:17:0: E0401: Unable to import 'mongodb_api.main' (import-error)
-mongodb_api\tests\test_routes.py:17:0: C0413: Import "from mongodb_api.main import app" should be placed at the top of the module (wrong-import-position)
-mongodb_api\tests\test_routes.py:22:0: C0116: Missing function or method docstring (missing-function-docstring)
-mongodb_api\tests\test_routes.py:28:0: C0116: Missing function or method docstring (missing-function-docstring)
-mongodb_api\tests\test_routes.py:35:0: C0116: Missing function or method docstring (missing-function-docstring)
-mongodb_api\tests\test_routes.py:46:0: C0116: Missing function or method docstring (missing-function-docstring)
-mongodb_api\tests\test_routes.py:57:0: C0116: Missing function or method docstring (missing-function-docstring)
-mongodb_api\tests\test_routes.py:65:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\tests\test_routes.py:13:0: C0413: Import "from unittest.mock import MagicMock" should be placed at the top of the module (wrong-import-position)
+mongodb_api\tests\test_routes.py:16:0: C0413: Import "from fastapi.testclient import TestClient" should be placed at the top of the module (wrong-import-position)
+mongodb_api\tests\test_routes.py:19:0: E0401: Unable to import 'mongodb_api.main' (import-error)
+mongodb_api\tests\test_routes.py:19:0: C0413: Import "from mongodb_api.main import app" should be placed at the top of the module (wrong-import-position)
+mongodb_api\tests\test_routes.py:20:0: E0401: Unable to import 'mongodb_api.models' (import-error)
+mongodb_api\tests\test_routes.py:20:0: C0413: Import "from mongodb_api.models import Paper, PaperUpdate" should be placed at the top of the module (wrong-import-position)
+mongodb_api\tests\test_routes.py:22:0: E0401: Unable to import 'mongodb_api.utils' (import-error)
+mongodb_api\tests\test_routes.py:22:0: C0413: Import "from mongodb_api.utils import custom_serialize, load_paper_json" should be placed at the top of the module (wrong-import-position)
+mongodb_api\tests\test_routes.py:52:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\tests\test_routes.py:59:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\tests\test_routes.py:66:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\tests\test_routes.py:75:0: C0116: Missing function or method docstring (missing-function-docstring)
+mongodb_api\tests\test_routes.py:88:0: C0116: Missing function or method docstring (missing-function-docstring)
 
 ------------------------------------------------------------------
-Your code has been rated at 8.63/10 (previous run: 8.63/10, +0.00)
+Your code has been rated at 7.92/10 (previous run: 7.92/10, +0.00)
+
+

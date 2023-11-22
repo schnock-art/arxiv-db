@@ -18,8 +18,10 @@ start-mongo:
 
 prepare-commit:
 	make export-conda-env
-	black . --preview
+#	black .
 	isort .
-	flake8 . --ignore=E402 || exit /b 0
+#	flake8 . --ignore=E402 || exit /b 0
 	pylint *.py **/*.py > pylint-results.txt || exit /b 0
+	echo.>> pylint-results.txt
+	pytest
 	git add *

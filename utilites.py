@@ -46,4 +46,33 @@ ignored_extensions = [".pyc", ".log"]  # Example file extensions to ignore
 
 print_folder_structure(start_path, ignored_folders, ignored_extensions)
 
+# Standard Library
+# %%
+import datetime
+
+data = {
+    "entry_id": "http://arxiv.org/abs/2210.06998v2",
+    "title": "Test Title insert",
+    "summary": "Test Summary insert",
+    "published": datetime.datetime(
+        2022, 10, 13, 13, 8, 54, tzinfo=datetime.timezone.utc
+    ).isoformat(),
+    "updated": datetime.datetime(
+        2023, 1, 9, 16, 33, 43, tzinfo=datetime.timezone.utc
+    ).isoformat(),
+    "pdf_url": "http://arxiv.org/pdf/2210.06998v2",
+    "download_path": "\\arxiv\\cs.CR\\testfile.pdf",
+    "doi": None,
+    "comment": "",
+}
+
+# Remove None values
+# cleaned_data = {k: v for k, v in data.items() if v is not None}
+
+# Serialize to JSON
+# json_data = json.dumps(data, indent=4)
+
+# Writing to a file
+# with open("data.json", "w") as file:
+#    file.write(json_data)
 # %%

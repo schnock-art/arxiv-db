@@ -12,6 +12,7 @@ The models defined in this module are:
 # Standard Library
 import datetime
 import logging
+import os
 from typing import Optional
 
 # Third Party
@@ -20,6 +21,11 @@ from pydantic import AnyUrl, BaseModel, Field
 # the __name__ resolve to "uicheckapp.services"
 logger = logging.getLogger(__name__)
 # This will load the uicheckapp logger
+
+# Local imports
+from .utils import load_paper_json
+
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 
 class Paper(BaseModel):
@@ -46,7 +52,7 @@ class Paper(BaseModel):
     """
 
     entry_id: AnyUrl = Field(
-        ..., alias="_id", description="Unique identifier URL for the paper"
+        ..., description="Unique identifier URL for the paper"  # alias="_id",
     )
     title: str = Field(..., description="Title of the paper")
     summary: str = Field(..., description="Summary of the paper")
@@ -69,32 +75,15 @@ class Paper(BaseModel):
     )
     comment: Optional[str] = Field(None, description="Additional comments")
 
-    class Config:
-        """
-        Configuration for the model.
-        """
-
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_schema_extra = {
-            "example": {
-                "entry_id": "http://arxiv.org/abs/2210.06998v2",
-                "title": "Test Title insert",
-                # "author": "Miguel de Cervantes",
-                "summary": "Test Summary insert",
-                "published": datetime.datetime(
-                    2022, 10, 13, 13, 8, 54, tzinfo=datetime.timezone.utc
-                ),
-                "updated": datetime.datetime(
-                    2023, 1, 9, 16, 33, 43, tzinfo=datetime.timezone.utc
-                ),
-                "pdf_url": "http://arxiv.org/pdf/2210.06998v2",
-                "download_path": "\\arxiv\\cs.CR\\testfile.pdf",
-                "doi": None,
-                "comment": "",
-                # "primary_category": "cs.CR",
-            }
-        }
+    model_config = {
+        "populate_by_name": True,
+        "arbitrary_types_allowed": True,
+        "json_schema_extra": {
+            "example": load_paper_json(
+                os.path.join(current_path, "example_entry.json")
+            )
+        },
+    }
 
 
 class PaperUpdate(BaseModel):
@@ -127,15 +116,13 @@ class PaperUpdate(BaseModel):
     doi: Optional[str] = None
     comment: Optional[str] = None
 
-    class Config:
-        """
-        Configuration for the model.
-        """
-
-        json_schema_extra = {
-            "example": {
-                "title": "Test Title",
-                # "author": "Miguel de Cervantes",
-                "summary": "Test Summary",
-            }
+    model_config = {
+        "json_schema_extra": {
+            "example": load_paper_json(
+                os.path.join(current_path, "example_update.json")
+            )
         }
+    }
+
+
+# %%

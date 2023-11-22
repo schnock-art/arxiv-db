@@ -43,7 +43,7 @@ def create_paper(request: Request, paper: Paper = Body(...)):
         paper = jsonable_encoder(paper)
         new_paper = request.app.database["papers"].insert_one(paper)
         created_paper = request.app.database["papers"].find_one(
-            {"_id": new_paper.inserted_id}
+            {"entry_id": new_paper.inserted_id}
         )
     except Exception as e:
         logger.error(f"Error creating paper: {e}")
@@ -51,7 +51,7 @@ def create_paper(request: Request, paper: Paper = Body(...)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )
 
-    logger.info(f"Created paper with id {created_paper['_id']}")
+    logger.info(f"Created paper with id {created_paper['entry_id']}")
     return created_paper
 
 
@@ -98,7 +98,7 @@ def find_paper(id: str, request: Request):
     found.
     """
     try:
-        paper = request.app.database["papers"].find_one({"_id": id})
+        paper = request.app.database["papers"].find_one({"entry_id": id})
     except Exception as e:
         logger.error(f"Error finding paper with id {id}: {e}")
         raise HTTPException(
@@ -133,10 +133,12 @@ def update_paper(id: str, request: Request, paper: PaperUpdate = Body(...)):
     found or not updated.
     """
     try:
-        update_data = {k: v for k, v in paper.dict().items() if v is not None}
+        update_data = {
+            k: v for k, v in paper.model_dump().items() if v is not None
+        }
         if update_data:
             update_result = request.app.database["papers"].update_one(
-                {"_id": id}, {"$set": update_data}
+                {"entry_id": id}, {"$set": update_data}
             )
             if update_result.modified_count == 0:
                 raise HTTPException(
@@ -144,7 +146,7 @@ def update_paper(id: str, request: Request, paper: PaperUpdate = Body(...)):
                     detail=f"Paper with ID {id} not found",
                 )
             existing_paper = request.app.database["papers"].find_one(
-                {"_id": id}
+                {"entry_id": id}
             )
         else:
             raise ValueError("No fields to update")
@@ -173,7 +175,9 @@ def delete_paper(id: str, request: Request, response: Response):
     if not found.
     """
     try:
-        delete_result = request.app.database["papers"].delete_one({"_id": id})
+        delete_result = request.app.database["papers"].delete_one(
+            {"entry_id": id}
+        )
         if delete_result.deleted_count == 0:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
