@@ -69,6 +69,7 @@ dependencies:
       - charset-normalizer==3.3.2
       - cleo==2.1.0
       - click==8.1.7
+      - coverage==7.3.2
       - crashtest==0.4.1
       - dill==0.3.7
       - distlib==0.3.7
@@ -124,6 +125,7 @@ dependencies:
       - pymongo==4.6.0
       - pyproject-hooks==1.0.0
       - pytest==7.4.3
+      - pytest-cov==4.1.0
       - python-dotenv==1.0.0
       - python-multipart==0.0.6
       - pywin32-ctypes==0.2.2

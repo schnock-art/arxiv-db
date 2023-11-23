@@ -51,6 +51,12 @@ def create_paper(request: Request, paper: Paper = Body(...)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )
 
+    if not created_paper:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Created paper not found"
+        )
+
     logger.info(f"Created paper with id {created_paper['entry_id']}")
     return created_paper
 
@@ -102,18 +108,16 @@ def find_paper(id: str, request: Request):
     except Exception as e:
         logger.error(f"Error finding paper with id {id}: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            status_code=status.HTTP_404_NOT_FOUND, detail="Paper not found"
         )
 
-    if paper is not None:
-        logger.info(f"Found paper with id {id}")
-        return paper
-
-    logger.error(f"Paper with id {id} not found")
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Paper with ID {id} not found",
-    )
+    if not paper:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Paper with ID {id} not found"
+        )
+    logger.info(f"Found paper with ID {id}")
+    return paper
 
 
 @router.put(
@@ -132,33 +136,47 @@ def update_paper(id: str, request: Request, paper: PaperUpdate = Body(...)):
     The updated paper as a dictionary, or raises an HTTP 404 error if not
     found or not updated.
     """
-    try:
-        update_data = {
-            k: v for k, v in paper.model_dump().items() if v is not None
-        }
-        if update_data:
-            update_result = request.app.database["papers"].update_one(
-                {"entry_id": id}, {"$set": update_data}
-            )
-            if update_result.modified_count == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Paper with ID {id} not found",
-                )
-            existing_paper = request.app.database["papers"].find_one(
-                {"entry_id": id}
-            )
-        else:
-            raise ValueError("No fields to update")
-    except Exception as e:
-        logger.error(f"Error updating paper with id {id}: {e}")
+    update_data = {
+        k: v for k, v in paper.model_dump().items() if v is not None
+    }
+
+    if len(update_data.keys()) == 0:
+
+        logger.warning("Nothing to update")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            status_code=status.HTTP_304_NOT_MODIFIED,
+        )
+
+    try:
+        existing_paper = request.app.database["papers"].find_one({"entry_id": id})
+    except Exception as e:
+        logger.error(f"Error finding paper with id {id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Paper with ID {id} not found",
+        )
+
+
+    update_result = request.app.database["papers"].update_one(
+        {"entry_id": id}, {"$set": update_data}
+    )
+
+    if update_result.modified_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Paper with ID {id} not found",
+        )
+
+    updated_paper = request.app.database["papers"].find_one({"entry_id": id})
+
+    if not updated_paper:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Paper with ID {id} not found",
         )
 
     logger.info(f"Updated paper with id {id}")
-    return existing_paper
-
+    return updated_paper
 
 @router.delete("/{id:path}", response_description="Delete a paper")
 def delete_paper(id: str, request: Request, response: Response):

@@ -14,6 +14,7 @@ cleo==2.1.0
 click==8.1.7
 colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
 comm @ file:///home/conda/feedstock_root/build_artifacts/comm_1691044910542/work
+coverage==7.3.2
 crashtest==0.4.1
 debugpy @ file:///D:/bld/debugpy_1695534453785/work
 decorator @ file:///home/conda/feedstock_root/build_artifacts/decorator_1641555617451/work
@@ -86,6 +87,7 @@ pylint==3.0.2
 pymongo==4.6.0
 pyproject_hooks==1.0.0
 pytest==7.4.3
+pytest-cov==4.1.0
 python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
 python-dotenv==1.0.0
 python-multipart==0.0.6

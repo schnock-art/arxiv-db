@@ -2,7 +2,7 @@
 # Exports environment to requirements.txt
 export-conda-env:
 	conda env export --no-build	> environment.yml
-	filter_env.bat
+	utilities\filter_env.bat
 	pip freeze > requirements.txt
 
 # Installs requirements.txt
@@ -12,6 +12,9 @@ install-requirements:
 create-conda-env:
 	conda env create -f environment.yml
 
+export-folder-structure:
+	python utilities/folder_structure.py
+
 # Starts MongoDB API
 start-mongo:
 	cd mongodb_api
@@ -19,10 +22,10 @@ start-mongo:
 
 prepare-commit:
 	make export-conda-env
+	make export-folder-structure
 #	black .
 	isort .
 #	flake8 . --ignore=E402 || exit /b 0
-	pylint *.py **/*.py > pylint-results.txt || exit /b 0
-	echo.>> pylint-results.txt
-	pytest
+	utilities\pylint.bat
+	utilities\pytest.bat
 	git add *

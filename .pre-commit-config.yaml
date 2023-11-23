@@ -3,8 +3,8 @@ repos:
     rev: v4.5.0
     hooks:
     -   id: check-yaml
-    -   id: end-of-file-fixer
-        exclude: '^(Makefile|pylint-results\.txt|excluded_libraries\.txt)$'
+    #-   id: end-of-file-fixer
+    #    exclude: '^(Makefile|utilities/pylint-results\.txt|utilities/excluded_libraries\.txt|utilities/folder_structure.txt)$'
     -   id: trailing-whitespace
 -   repo: https://github.com/pycqa/isort
     rev: 5.12.0
@@ -33,6 +33,8 @@ repos:
     -   id: run-tests
         name: run-tests
         language: system
+        entry: pytest --cov
+        pass_filenames: false
+        always_run: true
         types: [python]
-        entry: pytest
         require_serial: true

@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 REM The name of the original and temporary files
 set "ENV_FILE=environment.yml"
 set "TEMP_FILE=temp_env.yml"
-set "EXCLUDE_FILE=excluded_libraries.txt"
+set "EXCLUDE_FILE=utilities\excluded_libraries.txt"
 
 REM Copy original environment file to a temporary one
 copy /Y "%ENV_FILE%" "%TEMP_FILE%"
