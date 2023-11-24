@@ -7,29 +7,41 @@
     pyproject.toml
     README.md
     requirements.txt
+    setup.py
     __init__.py
     .github/
         workflows/
             python-package-conda.yml
+    arxiv_crawler/
+        main.py
+        __init__.py
     mongodb_api/
-        example_entry.json
-        example_update.json
         logging.conf
         main.py
-        models.py
+        results
         routes.py
         utils.py
         __init__.py
+        models/
+            example_entry.json
+            example_update.json
+            models.py
+            __init__.py
         tests/
-            pytest-results.txt
             test_routes.py
             __init__.py
     utilities/
         excluded_libraries.txt
         filter_env.bat
         folder_structure.py
-        folder_structure.txt
-        pylint-results.txt
-        pylint.bat.bat
-        pytest-results.txt
+        pylint.bat
         pytest.bat
+        results/
+            folder_structure.txt
+            pylint-results.txt
+            pytest-results.txt
+    your_project_name.egg-info/
+        dependency_links.txt
+        PKG-INFO
+        SOURCES.txt
+        top_level.txt

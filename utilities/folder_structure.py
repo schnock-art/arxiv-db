@@ -56,7 +56,7 @@ if __name__=="__main__":
     parser.add_argument("--start_path", type=str, default=None)
     parser.add_argument("--ignored_folders", type=str, default=None)
     parser.add_argument("--ignored_extensions", type=str, default=None)
-    parser.add_argument("--output_path", type=str, default="utilities/folder_structure.txt")
+    parser.add_argument("--output_path", type=str, default="utilities/results/folder_structure.txt")
     parser.add_argument("--print_only", type=bool, default=False)
     args = parser.parse_args()
 

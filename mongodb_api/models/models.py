@@ -22,8 +22,9 @@ from pydantic import AnyUrl, BaseModel, Field
 logger = logging.getLogger(__name__)
 # This will load the uicheckapp logger
 
+# Library
 # Local imports
-from .utils import load_paper_json
+from mongodb_api.utils import custom_serialize, load_paper_json
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -52,7 +53,7 @@ class Paper(BaseModel):
     """
 
     entry_id: AnyUrl = Field(
-        ..., description="Unique identifier URL for the paper"  # alias="_id",
+        ..., alias="_id", description="Unique identifier URL for the paper"  # alias="_id",
     )
     title: str = Field(..., description="Title of the paper")
     summary: str = Field(..., description="Summary of the paper")
@@ -84,6 +85,9 @@ class Paper(BaseModel):
             )
         },
     }
+
+    def model_dump_serialized(self, json_dump: bool = False):
+        return custom_serialize(self, json_dump=json_dump)
 
 
 class PaperUpdate(BaseModel):
@@ -123,6 +127,9 @@ class PaperUpdate(BaseModel):
             )
         }
     }
+
+    def model_dump_serialized(self, json_dump: bool = False, ignore_none: bool = False):
+        return custom_serialize(self, json_dump=json_dump, ignore_none=ignore_none)
 
 
 # %%

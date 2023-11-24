@@ -21,11 +21,19 @@ def load_paper_json(file_path):
     return data
 
 
-def custom_serialize(model: BaseModel):
-    serialized_data = model.model_dump()
+def custom_serialize(model: BaseModel,
+                     json_dump: bool = False,
+                     ignore_none: bool = False):
+    if json_dump:
+        serialized_data = model.model_dump_json(by_alias=True)
+    else:
+        serialized_data = model.model_dump(by_alias=True)
 
     # Manually handle specific types
     for key, value in serialized_data.items():
+        if ignore_none and value is None:
+            #logger.info(f"Skipping serialization of {key} as it is None")
+            continue
         if isinstance(value, datetime):
             serialized_data[key] = value.isoformat().replace("+00:00", "Z")
         elif isinstance(value, AnyUrl):
