@@ -5,18 +5,19 @@ The API routes are implemented using FastAPI, a modern Python web framework
 for building APIs with minimal code.
 """
 
-# Standard Library
-import datetime
 import logging
 from typing import List
-#from fastapi.encoders import jsonable_encoder
 from urllib.parse import unquote
 
 # Third Party
 from fastapi import APIRouter, Body, HTTPException, Request, Response, status
-from pydantic import AnyUrl
 
 from .models.models import Paper, PaperUpdate
+from .services.paper_service import (
+    PaperAlreadyExistsError,
+    PaperNotFoundError,
+    PaperNotModifiedError,
+)
 
 # the __name__ resolve to "uicheckapp.services"
 logger = logging.getLogger(__name__)
@@ -47,32 +48,22 @@ def create_paper(request: Request, paper: Paper = Body(...)):
         logger.info(paper)
         paper_data = paper.model_dump_serialized(json_dump=False)
         logger.info(paper_data)
-        paper = request.app.database["papers"].find_one({"_id": paper_data["_id"]})
-        logger.info(paper)
-        if paper:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail=f"Paper with ID {id} already exists",
-            )
-
-
-
-        result = request.app.database["papers"].insert_one(paper_data)
-        paper_id = result.inserted_id
-
-        # Retrieve the newly created paper
-        created_paper = request.app.database["papers"].find_one({"_id": paper_id})
+        created_paper = request.app.paper_service.create_paper(paper_data)
+    except PaperAlreadyExistsError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Paper with ID {paper.entry_id} already exists",
+        )
+    except PaperNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Created paper not found",
+        )
     except Exception as e:
         logger.error(f"Error creating paper: {e}")
         raise e
 
-    if not created_paper:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Created paper not found"
-        )
-
-    logger.info(f"Created paper with id {paper_id}")
+    logger.info(f"Created paper with id {paper.entry_id}")
     return Paper(**created_paper)
 
 
@@ -90,7 +81,7 @@ def list_papers(request: Request):
     A list of papers, each as a dictionary.
     """
     try:
-        papers = list(request.app.database["papers"].find(limit=100))
+        papers = request.app.paper_service.list_papers()
     except Exception as e:
         logger.error(f"Error listing papers: {e}")
         raise e
@@ -120,17 +111,17 @@ def find_paper(id: str, request: Request):
     try:
         id = unquote(id)
         logger.info(f"Finding paper with id {id}")
-        paper = request.app.database["papers"].find_one({"_id": id})
+        paper = request.app.paper_service.find_paper(id)
         logger.info(paper)
-    except Exception as e:
-        logger.error(f"Error finding paper with id {id}: {e}")
-        raise e
-
-    if not paper:
+    except PaperNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Paper with ID {id} not found"
         )
+    except Exception as e:
+        logger.error(f"Error finding paper with id {id}: {e}")
+        raise e
+
     logger.info(f"Found paper with ID {id}")
     return paper
 
@@ -158,32 +149,20 @@ def update_paper(id: str, request: Request, paper: PaperUpdate = Body(...)):
     update_data = paper.model_dump_serialized(json_dump=False, ignore_none=True)
     logger.info(update_data)
     try:
-        existing_paper = request.app.database["papers"].find_one({"_id": id})
-    except Exception as e:
-        logger.error(f"Error finding paper with id {id}: {e}")
+        updated_paper = request.app.paper_service.update_paper(id, update_data)
+    except PaperNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Paper with ID {id} not found"
         )
-
-
-    update_result = request.app.database["papers"].update_one(
-        {"_id": id}, {"$set": update_data}
-    )
-
-    if update_result.modified_count == 0:
+    except PaperNotModifiedError:
         raise HTTPException(
             status_code=status.HTTP_304_NOT_MODIFIED,
             detail=f"Paper with ID {id} not modified",
         )
-
-    updated_paper = request.app.database["papers"].find_one({"_id": id})
-
-    if not updated_paper:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Paper with ID {id} not found",
-        )
+    except Exception as e:
+        logger.error(f"Error updating paper with id {id}: {e}")
+        raise e
 
     logger.info(f"Updated paper with id {id}")
     return updated_paper
@@ -205,14 +184,11 @@ def delete_paper(id: str, request: Request, response: Response):
     try:
         id = unquote(id)
         logger.info(f"Deleting paper with id {id}")
-        delete_result = request.app.database["papers"].delete_one(
-            {"_id": id}
-        )
+        request.app.paper_service.delete_paper(id)
         response.status_code = status.HTTP_200_OK
         return response
 
     except Exception as e:
         logger.error(f"Error deleting paper with id {id}: {e}")
         raise e
-
 

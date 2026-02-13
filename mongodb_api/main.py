@@ -20,7 +20,9 @@ from fastapi import FastAPI
 from pymongo import MongoClient
 
 # Local imports
+from .repositories.mongo_paper_repository import MongoPaperRepository
 from .routes import router as paper_router  # Adjusted to absolute import
+from .services.paper_service import PaperService
 
 os.chdir(os.path.dirname(__file__))
 
@@ -64,7 +66,11 @@ async def lifespan(api_app: FastAPI):
     """
     try:
         api_app.mongodb_client = MongoClient(mongo_config["ATLAS_URI"])
-        api_app.database = app.mongodb_client[mongo_config["DB_NAME"]]
+        api_app.database = api_app.mongodb_client[mongo_config["DB_NAME"]]
+        api_app.paper_repository = MongoPaperRepository(
+            api_app.database["papers"]
+        )
+        api_app.paper_service = PaperService(api_app.paper_repository)
         api_app.mongodb_client.admin.command("ping")
         logger.info(
             "Successfully connected to MongoDB! See API documentation at"
